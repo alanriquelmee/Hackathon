@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>QR de tu Playlist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 30px;
+        }
+        img {
+            margin: 20px 0;
+            width: 250px;
+            height: 250px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎉 ¡Tu playlist está lista!</h1>
+    <p><a href="{{ playlist_url }}" target="_blank">🎧 Abrir playlist en Spotify</a></p>
+
+    <h2>📱 Compartila con este código QR:</h2>
+    <img id="qrImg" src="data:image/png;base64,{{ qr_img }}" alt="Código QR de la playlist">
+
+    <br>
+    <a id="descargarQR" download="playlist_qr.png">
+        <button>⬇️ Descargar QR</button>
+    </a>
+
+    <form action="/" method="get">
+        <button type="submit">Volver al inicio</button>
+    </form>
+
+    <script>
+        // Captura la imagen y prepara el enlace de descarga
+        const img = document.getElementById("qrImg");
+        const a = document.getElementById("descargarQR");
+        a.href = img.src;
+    </script>
+</body>
+</html>

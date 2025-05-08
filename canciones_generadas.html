@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Canciones generadas</title>
+</head>
+<body>
+    <h1>🎼 Canciones recomendadas para tu estado de ánimo:</h1>
+    <ul>
+        {% for cancion in canciones %}
+            <li>{{ cancion }}</li>
+        {% endfor %}
+    </ul>
+
+    <form action="/login" method="get">
+        <button type="submit">🎧 Generar playlist en Spotify</button>
+    </form>
+</body>
+</html>
