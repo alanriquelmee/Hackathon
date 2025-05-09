@@ -55,6 +55,16 @@ def generar_playlist():
     session["estado_animo"] = estado_animo
     return render_template("canciones_generadas.html", canciones=canciones)
 
+# NUEVA RUTA PARA REGENERAR CANCIONES
+@app.route("/regenerar_canciones", methods=["POST"])
+def regenerar_canciones():
+    estado_animo = session.get("estado_animo")
+    if not estado_animo:
+        return redirect("/")
+    canciones = generar_canciones_con_gpt(estado_animo)
+    session["canciones"] = canciones
+    return render_template("canciones_generadas.html", canciones=canciones)
+
 @app.route("/login")
 def login():
     auth_url = (
