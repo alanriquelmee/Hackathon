@@ -2,15 +2,75 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>MOODify - Tu playlist según tu estado de ánimo</title>
+    <title>MOODify 🎵</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 2em;
+            background-color: #f2f2f2;
+        }
+        input, button {
+            padding: 0.8em;
+            margin: 0.5em;
+            font-size: 1.1em;
+        }
+        #mic-status {
+            font-style: italic;
+            color: green;
+        }
+    </style>
 </head>
 <body>
-    <h1>🎵 MOODify</h1>
+    <h1>🎶 MOODify</h1>
+    <p>Decinos cómo te sentís y te generamos una playlist 🎧</p>
+
     <form action="/generar_playlist" method="POST">
-        <label for="estado_animo">¿Cómo te sentís hoy?</label><br>
-        <input type="text" name="estado_animo" id="estado_animo" required>
-        <br><br>
-        <button type="submit">🎶 Generar canciones</button>
+        <input type="text" name="estado_animo" id="estado_animo" placeholder="Ej: feliz, nostálgico, motivado..." required>
+        <br>
+        <button type="button" onclick="iniciarReconocimiento()">🎙️ Hablar</button>
+        <span id="mic-status"></span>
+        <br>
+        <button type="submit">Generar canciones</button>
     </form>
+
+    <script>
+        function iniciarReconocimiento() {
+            const status = document.getElementById("mic-status");
+            const input = document.getElementById("estado_animo");
+
+            // Soporte del navegador
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Tu navegador no soporta reconocimiento por voz.");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = "es-ES";
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            status.textContent = "🎧 Escuchando... hablá ahora";
+
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const resultado = event.results[0][0].transcript;
+                input.value = resultado;
+                status.textContent = "✅ Capturado: " + resultado;
+            };
+
+            recognition.onerror = function(event) {
+                status.textContent = "❌ Error: " + event.error;
+            };
+
+            recognition.onend = function() {
+                if (status.textContent === "🎧 Escuchando... hablá ahora") {
+                    status.textContent = "⏹️ Micrófono apagado.";
+                }
+            };
+        }
+    </script>
 </body>
 </html>
