@@ -2,22 +2,96 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>MOODWave 🎵</title>
+    <!-- Aquí enlazas el archivo CSS desde la carpeta static -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+    <meta charset="UTF-8">
     <title>MOODify 🎵</title>
     <style>
+        :root {
+            --azul-oscuro: #1e3a8a;
+            --azul-claro: #60a5fa;
+            --celeste: #bfdbfe;
+            --fondo: #e0f2fe;
+            --blanco: #ffffff;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, var(--celeste), var(--blanco));
+            margin: 0;
             padding: 2em;
-            background-color: #f2f2f2;
+            text-align: center;
+            animation: fadeIn 1s ease-in;
         }
-        input, button {
+
+        h1 {
+            font-size: 3em;
+            color: var(--azul-oscuro);
+            margin-bottom: 0.2em;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: var(--azul-oscuro);
+        }
+
+        form {
+            margin-top: 2em;
+            background-color: var(--blanco);
+            padding: 2em;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            animation: popIn 0.8s ease;
+        }
+
+        input[type="text"] {
+            width: 70%;
             padding: 0.8em;
-            margin: 0.5em;
-            font-size: 1.1em;
+            border: 2px solid var(--azul-claro);
+            border-radius: 8px;
+            font-size: 1em;
         }
+
+        button {
+            margin: 0.5em;
+            padding: 0.8em 1.5em;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            background: var(--azul-claro);
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        button:hover {
+            background: var(--azul-oscuro);
+            transform: scale(1.05);
+        }
+
         #mic-status {
+            display: block;
+            margin-top: 0.5em;
             font-style: italic;
-            color: green;
+            color: var(--azul-oscuro);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -31,7 +105,7 @@
         <button type="button" onclick="iniciarReconocimiento()">🎙️ Hablar</button>
         <span id="mic-status"></span>
         <br>
-        <button type="submit">Generar canciones</button>
+        <button type="submit">🎵 Generar canciones</button>
     </form>
 
     <script>
@@ -39,7 +113,6 @@
             const status = document.getElementById("mic-status");
             const input = document.getElementById("estado_animo");
 
-            // Soporte del navegador
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
                 alert("Tu navegador no soporta reconocimiento por voz.");
